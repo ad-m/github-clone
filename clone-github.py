@@ -19,12 +19,12 @@ def call(cmd):
 
 
 def parse_url(git_url):
-    # git@github.com:alex/django-filter.git
-    # https://github.com/alex/django-filter.git
+    # git@github.com:ad-m/github-clone.git
+    # https://github.com/ad-m/github-clone.git
     if git_url.startswith('git@github.com'):
         return tuple(git_url.split('.')[1].split(':')[1].split('/'))
     if git_url.startswith('https://github.com/'):
-        return tuple('https://github.com/alex/django-filter.git'.split('.')[1].split('/')[1:])
+        return tuple(git_url.split('.')[1].split('/')[1:])
     raise ValueError("Mailform URL")
 
 
