@@ -14,6 +14,7 @@ class CommadnException(Exception):
 
 
 def call(cmd):
+    print "$", cmd
     if subprocess.Popen(cmd, shell=True).wait() != 0:
         raise CommadnException('Command "{cmd}" fail'.format(cmd=cmd))
 
@@ -34,13 +35,11 @@ def get_parent_git_url(user, repo):
 
 
 def git_add(git_url, directory):
-    command = 'git clone {url} {directory}'.format(url=git_url, directory=directory)
-    call(command)
+    call('git clone {url} {directory}'.format(url=git_url, directory=directory))
     parent_git_url = get_parent_git_url(*parse_url(git_url))
     if parent_git_url:
         call('cd {directory}; git remote add upstream {url}'.format(url=parent_git_url,
                                                                     directory=directory))
-        call(command)
         call('cd {directory}; git fetch upstream; git fetch origin'.format(directory=directory))
 
 
@@ -49,6 +48,7 @@ def main():
         if len(sys.argv) == 3:
             if 'github' not in sys.argv[1]:
                 print("Incorrect git_url")
+                return
             git_add(sys.argv[1], sys.argv[2])
         else:
             print "Usage: {sh} [git_url] [output_dir]".format(sh=sys.argv[0])
